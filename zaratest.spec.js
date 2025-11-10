@@ -71,7 +71,7 @@ test.describe("Zara test", () =>   {
 // Kontrollo që nav ka role="navigation" (nëse ekziston) ose që butonët kryesorë kanë aria-label 
 // ku e ka kuptimin.
 
-test.only("Kontrollo viewportat", async ({ page }) => {
+test("Kontrollo viewportat", async ({ page }) => {
     await page.pause();
     await page.fill("#user-name", "standard_user");
     await page.fill("#password", "secret_sauce");
