@@ -59,5 +59,47 @@ test.describe("Zara test", () =>   {
         expect(complete).toContainText("Thank you for your order!");
     })
 
+// Hap faqen e inventory.html (pas login).
+// Kontrollo tre viewport-e:
+// Desktop: 1280x720
+// Tablet: 768x1024
+// Mobile: 375x812
+// Për secilin viewport:
+// Verifiko që menu kryesore / logo / butonat e produktit janë të dukshëm dhe nuk overflow-ojnë.
+// Në mobile: kontrollo që butoni për shportë (.shopping_cart_link) është i dukshëm dhe i klikueshëm.
+// Accessibility basics:
+// Kontrollo që nav ka role="navigation" (nëse ekziston) ose që butonët kryesorë kanë aria-label 
+// ku e ka kuptimin.
+
+test.only("Kontrollo viewportat", async ({ page }) => {
+    await page.pause();
+    await page.fill("#user-name", "standard_user");
+    await page.fill("#password", "secret_sauce");
+    await page.locator(locators.loginbtn).click();
+    await page.waitForURL(/inventory.html/);
+    await expect(page).toHaveURL(/inventory.html/);
+    
+    //Desktop
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await expect(page.locator(locators.inventorylist)).toBeVisible();
+    await expect(page.locator(".title")).toBeVisible();
+    const desktopOverflow = await page.evaluate(() => document.documentElement.scrollWidth > 
+    window.innerWidth);
+    expect(desktopOverflow).toBe(false);
+    
+    //Tablet
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await expect(page.locator("div[data-test='primary-header']")).toContainText("Swag Labs");
+    const tabletOverflow = await page.evaluate(() => document.documentElement.scrollWidth > 
+    window.innerWidth);
+    expect(tabletOverflow).toBe(false);
+
+    //Mobile
+    await page.setViewportSize({ width: 375, height: 812 });
+    await expect(page.locator(locators.inventorylist)).toBeVisible();
+    const mobileOverflow = await page.evaluate(() => document.documentElement.scrollWidth > 
+    window.innerWidth);
+    expect(mobileOverflow).toBe(false);
+})
 
 })
