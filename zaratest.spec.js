@@ -72,7 +72,6 @@ test.describe("Zara test", () =>   {
 // ku e ka kuptimin.
 
 test("Kontrollo viewportat", async ({ page }) => {
-    await page.pause();
     await page.fill("#user-name", "standard_user");
     await page.fill("#password", "secret_sauce");
     await page.locator(locators.loginbtn).click();
